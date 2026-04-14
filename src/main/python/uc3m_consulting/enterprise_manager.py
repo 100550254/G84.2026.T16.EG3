@@ -17,68 +17,68 @@ class EnterpriseManager:
         pass
 
     @staticmethod
-    def validate_cif(c: str):
+    def validate_cif(codigo_cif: str):
         """validates a cif number """
-        if not isinstance(c, str):
+        if not isinstance(codigo_cif, str):
             raise EnterpriseManagementException("CIF code must be a string")
-        p = re.compile(r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$")
-        if not p.fullmatch(c):
+        patron_cif = re.compile(valor_control_calculado"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$")
+        if not patron_cif.fullmatch(codigo_cif):
             raise EnterpriseManagementException("Invalid CIF format")
 
-        l = c[0]
-        n = c[1:8]
-        u = c[8]
+        letra_inicial = codigo_cif[0]
+        digitos_cif = codigo_cif[1:8]
+        digito_control_leido = codigo_cif[8]
 
-        s1 = 0
-        s2 = 0
+        suma_impares = 0
+        suma_pares = 0
 
-        for i in range(len(n)):
+        for i in range(len(digitos_cif)):
             if i % 2 == 0:
-                x = int(n[i]) * 2
-                if x > 9:
-                    s1 = s1 + (x // 10) + (x % 10)
+                doble = int(digitos_cif[i]) * 2
+                if doble > 9:
+                    suma_impares = suma_impares + (doble // 10) + (doble % 10)
                 else:
-                    s1 = s1 + x
+                    suma_impares = suma_impares + doble
             else:
-                s2 = s2 + int(n[i])
+                suma_pares = suma_pares + int(digitos_cif[i])
 
-        t = s1 + s2
-        u2 = t % 10
-        r = 10 - u2
+        suma_total = suma_impares + suma_pares
+        unidad_suma = suma_total % 10
+        valor_control_calculado = 10 - unidad_suma
 
-        if r == 10:
-            r = 0
+        if valor_control_calculado == 10:
+            valor_control_calculado = 0
 
-        dic = "JABCDEFGHI"
+        letras_mapeo = "JABCDEFGHI"
 
-        if l in ('A', 'B', 'E', 'H'):
-            if str(r) != u:
+        if letra_inicial in ('A', 'B', 'E', 'H'):
+            if str(valor_control_calculado) != digito_control_leido:
                 raise EnterpriseManagementException("Invalid CIF character control number")
-        elif l in ('P', 'Q', 'S', 'K'):
-            if dic[r] != u:
+        elif letra_inicial in ('P', 'Q', 'S', 'K'):
+            if letras_mapeo[valor_control_calculado] != digito_control_leido:
                 raise EnterpriseManagementException("Invalid CIF character control letter")
         else:
             raise EnterpriseManagementException("CIF type not supported")
         return True
 
-    def validate_starting_date(self, t_d):
+    def validate_starting_date(self, fecha_texto):
         """validates the  date format  using regex"""
-        mr = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
-        res = mr.fullmatch(t_d)
-        if not res:
+        regex_fecha = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
+        resultado_match = regex_fecha.fullmatch(fecha_texto)
+        if not resultado_match:
             raise EnterpriseManagementException("Invalid date format")
 
         try:
-            my_date = datetime.strptime(t_d, "%d/%m/%Y").date()
+            fecha_objeto = datetime.strptime(fecha_texto, "%d/%m/%Y").date()
         except ValueError as ex:
             raise EnterpriseManagementException("Invalid date format") from ex
 
-        if my_date < datetime.now(timezone.utc).date():
+        if fecha_objeto < datetime.now(timezone.utc).date():
             raise EnterpriseManagementException("Project's date must be today or later.")
 
-        if my_date.year < 2025 or my_date.year > 2050:
+        if fecha_objeto.year < 2025 or fecha_objeto.year > 2050:
             raise EnterpriseManagementException("Invalid date format")
-        return t_d
+        return fecha_texto
     #pylint: disable=too-many-arguments, too-many-positional-arguments
     def register_project(self,
                          company_cif: str,
@@ -86,37 +86,37 @@ class EnterpriseManager:
                          project_description: str,
                          department: str,
                          date: str,
-                         budget: str):
+                         presupuesto: str):
         """registers a new project"""
         self.validate_cif(company_cif)
-        mr = re.compile(r"^[a-zA-Z0-9]{5,10}")
-        res = mr.fullmatch(project_acronym)
-        if not res:
+        regex_acronimo = re.compile(r"^[a-zA-Z0-9]{5,10}")
+        resultado_acronimo = regex_acronimo.fullmatch(project_acronym)
+        if not resultado_acronimo:
             raise EnterpriseManagementException("Invalid acronym")
-        md = re.compile(r"^.{10,30}$")
-        res = md.fullmatch(project_description)
-        if not res:
+        regex_descripcion = re.compile(r"^.{10,30}$")
+        resultado_acronimo = regex_descripcion.fullmatch(project_description)
+        if not resultado_acronimo:
             raise EnterpriseManagementException("Invalid description format")
 
-        mr = re.compile(r"(HR|FINANCE|LEGAL|LOGISTICS)")
-        res = mr.fullmatch(department)
-        if not res:
+        regex_acronimo = re.compile(r"(HR|FINANCE|LEGAL|LOGISTICS)")
+        resultado_acronimo = regex_acronimo.fullmatch(department)
+        if not resultado_acronimo:
             raise EnterpriseManagementException("Invalid department")
 
         self.validate_starting_date(date)
 
         try:
-            f_bdgt  = float(budget)
+            presupuesto_float  = float(presupuesto)
         except ValueError as exc:
             raise EnterpriseManagementException("Invalid budget amount") from exc
 
-        n_str = str(f_bdgt)
-        if '.' in n_str:
-            decimales = len(n_str.split('.')[1])
+        presupuesto_str = str(presupuesto_float)
+        if '.' in presupuesto_str:
+            decimales = len(presupuesto_str.split('.')[1])
             if decimales > 2:
                 raise EnterpriseManagementException("Invalid budget amount")
 
-        if f_bdgt < 50000 or f_bdgt > 1000000:
+        if presupuesto_float < 50000 or presupuesto_float > 1000000:
             raise EnterpriseManagementException("Invalid budget amount")
 
 
@@ -125,33 +125,33 @@ class EnterpriseManager:
                                         project_description=project_description,
                                         department=department,
                                         starting_date=date,
-                                        project_budget=budget)
+                                        project_budget=presupuesto)
 
         try:
-            with open(PROJECTS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                t_l = json.load(file)
+            with open(PROJECTS_STORE_FILE, "r", encoding="utf-8", newline="") as fichero:
+                lista_proyectos = json.load(fichero)
         except FileNotFoundError:
-            t_l = []
+            lista_proyectos = []
         except json.JSONDecodeError as ex:
             raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
-        for t_i in t_l:
-            if t_i == new_project.to_json():
+        for proyecto_item in lista_proyectos:
+            if proyecto_item == new_project.to_json():
                 raise EnterpriseManagementException("Duplicated project in projects list")
 
-        t_l.append(new_project.to_json())
+        lista_proyectos.append(new_project.to_json())
 
         try:
-            with open(PROJECTS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-                json.dump(t_l, file, indent=2)
+            with open(PROJECTS_STORE_FILE, "w", encoding="utf-8", newline="") as fichero:
+                json.dump(lista_proyectos, fichero, indent=2)
         except FileNotFoundError as ex:
-            raise EnterpriseManagementException("Wrong file  or file path") from ex
+            raise EnterpriseManagementException("Wrong fichero  or fichero path") from ex
         except json.JSONDecodeError as ex:
             raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
         return new_project.project_id
 
 
-    def find_docs(self, date_str):
+    def find_docs(self, fecha_consulta):
         """
         Generates a JSON report counting valid documents for a specific date.
 
@@ -159,7 +159,7 @@ class EnterpriseManager:
         Saves the output to 'resultado.json'.
 
         Args:
-            date_str (str): date to query.
+            fecha_consulta (str): date to query.
 
         Returns:
             number of documents found if report is successfully generated and saved.
@@ -168,13 +168,13 @@ class EnterpriseManager:
             EnterpriseManagementException: On invalid date, file IO errors,
                 missing data, or cryptographic integrity failure.
         """
-        mr = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
-        res = mr.fullmatch(date_str)
-        if not res:
+        regex_fecha = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
+        resultado_fecha = regex_fecha.fullmatch(fecha_consulta)
+        if not resultado_fecha:
             raise EnterpriseManagementException("Invalid date format")
 
         try:
-            my_date = datetime.strptime(date_str, "%d/%m/%Y").date()
+            my_date = datetime.strptime(fecha_consulta, "%d/%m/%Y").date()
         except ValueError as ex:
             raise EnterpriseManagementException("Invalid date format") from ex
 
@@ -182,52 +182,52 @@ class EnterpriseManager:
         # open documents
         try:
             with open(TEST_DOCUMENTS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                d_list = json.load(file)
+                lista_documentos = json.load(file)
         except FileNotFoundError as ex:
             raise EnterpriseManagementException("Wrong file  or file path") from ex
 
 
-        rst = 0
+        conteo_validos = 0
 
         # loop to find
-        for el in d_list:
-            time_val = el["register_date"]
+        for doc_item in lista_documentos:
+            fecha_doc_str = doc_item["register_date"]
 
             # string conversion for easy match
-            doc_date_str = datetime.fromtimestamp(time_val).strftime("%d/%m/%Y")
+            doc_date_str = datetime.fromtimestamp(fecha_doc_str).strftime("%d/%m/%Y")
 
-            if doc_date_str == date_str:
-                d_obj = datetime.fromtimestamp(time_val, tz=timezone.utc)
-                with freeze_time(d_obj):
+            if doc_date_str == fecha_consulta:
+                fecha_obj = datetime.fromtimestamp(fecha_doc_str, tz=timezone.utc)
+                with freeze_time(fecha_obj):
                     # check the project id (thanks to freezetime)
                     # if project_id are different then the data has been
                     #manipulated
-                    p = ProjectDocument(el["project_id"], el["file_name"])
-                    if p.document_signature == el["document_signature"]:
-                        rst = rst + 1
+                    p_doc = ProjectDocument(doc_item["project_id"], doc_item["file_name"])
+                    if p_doc.document_signature == doc_item["document_signature"]:
+                        conteo_validos = conteo_validos + 1
                     else:
                         raise EnterpriseManagementException("Inconsistent document signature")
 
-        if rst == 0:
+        if conteo_validos == 0:
             raise EnterpriseManagementException("No documents found")
         # prepare json text
-        now_str = datetime.now(timezone.utc).timestamp()
-        s = {"Querydate":  date_str,
-             "ReportDate": now_str,
-             "Numfiles": rst
+        ahora_timestamp = datetime.now(timezone.utc).timestamp()
+        resultado_json = {"Querydate":  fecha_consulta,
+             "ReportDate": ahora_timestamp,
+             "Numfiles": conteo_validos
              }
 
         try:
             with open(TEST_NUMDOCS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                dl = json.load(file)
+                historial_informes = json.load(file)
         except FileNotFoundError:
-            dl = []
+            historial_informes = []
         except json.JSONDecodeError as ex:
             raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
-        dl.append(s)
+        historial_informes.append(resultado_json)
         try:
             with open(TEST_NUMDOCS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-                json.dump(dl, file, indent=2)
+                json.dump(historial_informes, file, indent=2)
         except FileNotFoundError as ex:
             raise EnterpriseManagementException("Wrong file  or file path") from ex
-        return rst
+        return conteo_validos

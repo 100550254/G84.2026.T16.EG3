@@ -63,7 +63,7 @@ class TestRegisterProjectTest(TestCase):
                         valor = mngr.register_project(company_cif=enterprise_cif,
                                                       project_acronym=project_acronym,
                                                       department=project_department,
-                                                      budget=number_budget,
+                                                      presupuesto=number_budget,
                                                       date=project_date,
                                                       project_description=project_description)
                         self.assertEqual(result, valor)
@@ -98,7 +98,7 @@ class TestRegisterProjectTest(TestCase):
                             valor = mngr.register_project(company_cif=enterprise_cif,
                                                           project_acronym=project_acronym,
                                                           department=project_department,
-                                                          budget=number_budget,
+                                                          presupuesto=number_budget,
                                                           date=project_date,
                                                           project_description=project_description)
                         self.assertEqual(c_m.exception.message, result)
@@ -127,11 +127,11 @@ class TestRegisterProjectTest(TestCase):
 
         mngr  = EnterpriseManager()
         mngr.register_project(company_cif=enterprise_cif,
-                                           project_acronym=project_acronym,
-                                           project_description=project_description,
-                                           date=project_date,
-                                           budget=number_budget,
-                                           department=project_department)
+                              project_acronym=project_acronym,
+                              project_description=project_description,
+                              date=project_date,
+                              presupuesto=number_budget,
+                              department=project_department)
         if os.path.isfile(PROJECTS_STORE_FILE):
             with open(PROJECTS_STORE_FILE, "r", encoding="utf-8", newline="") as file_org:
                 hash_original = hashlib.md5(str(file_org).encode()).hexdigest()
@@ -139,11 +139,11 @@ class TestRegisterProjectTest(TestCase):
             hash_original = ""
         with self.assertRaises(EnterpriseManagementException) as c_m:
             mngr.register_project(company_cif=enterprise_cif,
-                                               project_acronym=project_acronym,
-                                               project_description=project_description,
-                                               date=project_date,
-                                               budget=number_budget,
-                                               department=project_department)
+                                  project_acronym=project_acronym,
+                                  project_description=project_description,
+                                  date=project_date,
+                                  presupuesto=number_budget,
+                                  department=project_department)
         self.assertEqual(c_m.exception.message, "Duplicated project in projects list")
 
         # now we check that the signature of the file is the same
@@ -169,7 +169,7 @@ class TestRegisterProjectTest(TestCase):
                                            project_acronym=project_acronym,
                                            project_description=project_description,
                                            date=project_date,
-                                           budget=number_budget,
+                                           presupuesto=number_budget,
                                            department=project_department)
         self.assertEqual("6ad10748f3c9137c0f22ff7d4eed8d19",my_request)
         my_data = self.read_file()
@@ -203,7 +203,7 @@ class TestRegisterProjectTest(TestCase):
                                            project_acronym=project_acronym,
                                            project_description=project_description,
                                            date=project_date,
-                                           budget=number_budget,
+                                           presupuesto=number_budget,
                                            department=project_department)
         self.assertEqual("8aab556991e7b0f1361b72e3ab17fa81", my_request)
         my_data = self.read_file()
@@ -242,11 +242,11 @@ class TestRegisterProjectTest(TestCase):
             hash_original = ""
         with self.assertRaises(EnterpriseManagementException) as c_m:
             mngr.register_project(company_cif=enterprise_cif,
-                                               project_acronym=project_acronym,
-                                               project_description=project_description,
-                                               date=project_date,
-                                               budget=number_budget,
-                                               department=project_department)
+                                  project_acronym=project_acronym,
+                                  project_description=project_description,
+                                  date=project_date,
+                                  presupuesto=number_budget,
+                                  department=project_department)
         self.assertEqual(c_m.exception.message, "Project's date must be today or later.")
 
         # now we check that the signature of the file is the same
