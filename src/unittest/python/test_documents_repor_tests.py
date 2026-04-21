@@ -8,7 +8,7 @@ from os import remove
 from datetime import datetime,timezone
 from freezegun import freeze_time
 from uc3m_consulting import (TEST_NUMDOCS_STORE_FILE,
-                        EnterpriseManager,
+                        ValidadorCif, ValidadorFecha, GestionadorProyecto,GestionadorDocumentos,
                         EnterpriseManagementException)
 
 class TestDocumentsReporTest(TestCase):
@@ -37,7 +37,7 @@ class TestDocumentsReporTest(TestCase):
     def test_valid_date(self):
         """validates a valid case with a valid date finding documents
         and updating the numdocs_store.json file"""
-        mngr = EnterpriseManager()
+        mngr = GestionadorDocumentos()
         res = mngr.find_docs("05/04/2026")
         self.assertEqual(2,res)
         data = self.read_file()
@@ -52,7 +52,7 @@ class TestDocumentsReporTest(TestCase):
     @freeze_time("2026/12/31 13:00:00")
     def test_file_wrong_date(self):
         """path with wrong cif code (exception)"""
-        mngr = EnterpriseManager()
+        mngr = GestionadorDocumentos()
 
         if os.path.isfile(TEST_NUMDOCS_STORE_FILE):
             with open(TEST_NUMDOCS_STORE_FILE, "r", encoding="utf-8", newline="") as file_org:
@@ -74,7 +74,7 @@ class TestDocumentsReporTest(TestCase):
     @freeze_time("2026/12/31 13:00:00")
     def test_report_not_found(self):
         """path with wrong cif code (exception)"""
-        mngr = EnterpriseManager()
+        mngr = GestionadorDocumentos()
 
         if os.path.isfile(TEST_NUMDOCS_STORE_FILE):
             with open(TEST_NUMDOCS_STORE_FILE, "r", encoding="utf-8", newline="") as file_org:

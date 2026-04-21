@@ -65,10 +65,12 @@ class ValidadorCif:
             else:
                 raise EnterpriseManagementException("CIF type not supported")
             return True
+
 class ValidadorFecha:
     """clase para validar la fecha"""
 
-    def validate_starting_date(self, fecha_texto):
+    @staticmethod
+    def validate_starting_date( fecha_texto):
         """validates the  date format  using regex"""
         regex_fecha = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
         resultado_match = regex_fecha.fullmatch(fecha_texto)
@@ -98,9 +100,9 @@ class GestionadorProyecto:
                          date: str,
                          presupuesto: str):
         """registers a new project"""
-        self.validate_cif(company_cif)
+        ValidadorCif.validate_cif(company_cif)
         self._validar_datos_proyecto(project_acronym, project_description, department)
-        self.validate_starting_date(date)
+        ValidadorFecha.validate_starting_date(date)
         self._validar_presupuesto(presupuesto)
 
         new_project = EnterpriseProject(company_cif=company_cif,
@@ -154,7 +156,7 @@ class GestionadorDocumentos:
 
     def find_docs(self, fecha_consulta):
         """ Genera un informe JSON contando los documentos válidos para una fecha específica """
-        self._validar_formato_fecha(fecha_consulta)
+        ValidadorFecha.validate_starting_date(fecha_consulta)
 
         store = DocumentStore()
         lista_documentos = store.cargar_documentos()
@@ -170,18 +172,6 @@ class GestionadorDocumentos:
 
         store.guardar_informe(resultado_json)
         return conteo_validos
-
-    def _validar_formato_fecha(self, fecha_consulta):
-        """ Comprueba que el string tenga un formato de fecha correcto """
-        regex_fecha = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
-        resultado_fecha = regex_fecha.fullmatch(fecha_consulta)
-        if not resultado_fecha:
-            raise EnterpriseManagementException("Invalid date format")
-
-        try:
-            datetime.strptime(fecha_consulta, "%d/%m/%Y").date()
-        except ValueError as ex:
-            raise EnterpriseManagementException("Invalid date format") from ex
 
     def _contar_documentos_validos(self, lista_documentos, fecha_consulta):
         conteo_validos = 0

@@ -10,7 +10,7 @@ from freezegun import freeze_time
 from uc3m_consulting import (JSON_FILES_PATH,
                         PROJECTS_STORE_FILE,
                         EnterpriseProject,
-                        EnterpriseManager,
+                        GestionadorProyecto,
                         EnterpriseManagementException)
 
 class TestRegisterProjectTest(TestCase):
@@ -42,7 +42,7 @@ class TestRegisterProjectTest(TestCase):
         my_cases = JSON_FILES_PATH + "test_cases_2026_method1.csv"
         with open(my_cases, newline='', encoding='utf-8') as csvfile:
             param_test_cases = csv.DictReader(csvfile, delimiter=';')
-            mngr = EnterpriseManager()
+            mngr = GestionadorProyecto()
             for row in param_test_cases:
                 test_id = row['ID_TEST']
                 enterprise_cif = row["CIF"]
@@ -125,7 +125,7 @@ class TestRegisterProjectTest(TestCase):
         project_description = "Testing duplicated projects"
         number_budget = 50000.00
 
-        mngr  = EnterpriseManager()
+        mngr  = GestionadorProyecto()
         mngr.register_project(company_cif=enterprise_cif,
                               project_acronym=project_acronym,
                               project_description=project_description,
@@ -164,7 +164,7 @@ class TestRegisterProjectTest(TestCase):
         project_date = "22/03/2026"
         project_description = "Testing today's project"
         number_budget = 50000.00
-        mngr = EnterpriseManager()
+        mngr = GestionadorProyecto()
         my_request = mngr.register_project(company_cif=enterprise_cif,
                                            project_acronym=project_acronym,
                                            project_description=project_description,
@@ -198,7 +198,7 @@ class TestRegisterProjectTest(TestCase):
         project_date = "23/03/2026"
         project_description = "Testing tomorrow's project"
         number_budget = 50000.00
-        mngr = EnterpriseManager()
+        mngr = GestionadorProyecto()
         my_request = mngr.register_project(company_cif=enterprise_cif,
                                            project_acronym=project_acronym,
                                            project_description=project_description,
@@ -232,7 +232,7 @@ class TestRegisterProjectTest(TestCase):
         project_date = "23/03/2026"
         project_description = "Testing yesteday's project"
         number_budget = 50000.00
-        mngr = EnterpriseManager()
+        mngr = GestionadorProyecto()
         # enterprise_cif;project_acronym;project_department;project_date;project_description;number_budget;RESULT
 
         if os.path.isfile(PROJECTS_STORE_FILE):
