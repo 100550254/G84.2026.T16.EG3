@@ -11,6 +11,7 @@ from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
                                                        TEST_NUMDOCS_STORE_FILE)
 from uc3m_consulting.project_document import ProjectDocument
 from uc3m_consulting.project_store import ProjectStore
+from uc3m_consulting.document_store import DocumentStore
 
 class EnterpriseManager:
     """Class for providing the methods for managing the orders"""
@@ -151,15 +152,15 @@ class EnterpriseManager:
 
     def find_docs(self, fecha_consulta):
         """ Genera un informe JSON contando los documentos válidos para una fecha específica """
-        # Extracción: Validación de la fecha
         self._validar_formato_fecha(fecha_consulta)
 
-        # Extracción: Lectura del fichero
-        lista_documentos = self._cargar_documentos()
+        # Instanciamos el store y cargamos documentos
+        store = DocumentStore()
+        lista_documentos = store.cargar_documentos()
 
         conteo_validos = self._contar_documentos_validos(lista_documentos, fecha_consulta)
 
-        # Preparar y guardar el informe
+        # Preparar y guardar el informe usando el store
         ahora_timestamp = datetime.now(timezone.utc).timestamp()
         resultado_json = {
             "Querydate": fecha_consulta,
@@ -167,7 +168,7 @@ class EnterpriseManager:
             "Numfiles": conteo_validos
         }
 
-        self._guardar_informe(resultado_json)
+        store.guardar_informe(resultado_json)
         return conteo_validos
 
     def _validar_formato_fecha(self, fecha_consulta):
@@ -181,14 +182,6 @@ class EnterpriseManager:
             datetime.strptime(fecha_consulta, "%d/%m/%Y").date()
         except ValueError as ex:
             raise EnterpriseManagementException("Invalid date format") from ex
-
-    def _cargar_documentos(self):
-        """ Lee y devuelve el contenido del fichero de documentos """
-        try:
-            with open(TEST_DOCUMENTS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                return json.load(file)
-        except FileNotFoundError as ex:
-            raise EnterpriseManagementException("Wrong file  or file path") from ex
 
     def _contar_documentos_validos(self, lista_documentos, fecha_consulta):
         conteo_validos = 0
@@ -215,20 +208,3 @@ class EnterpriseManager:
             raise EnterpriseManagementException("No documents found")
 
         return conteo_validos
-
-    def _guardar_informe(self, resultado_json):
-        try:
-            with open(TEST_NUMDOCS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                historial_informes = json.load(file)
-        except FileNotFoundError:
-            historial_informes = []
-        except json.JSONDecodeError as ex:
-            raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
-
-        historial_informes.append(resultado_json)
-
-        try:
-            with open(TEST_NUMDOCS_STORE_FILE, "w", encoding="utf-8", newline="") as file:
-                json.dump(historial_informes, file, indent=2)
-        except FileNotFoundError as ex:
-            raise EnterpriseManagementException("Wrong file  or file path") from ex
