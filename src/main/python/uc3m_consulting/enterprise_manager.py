@@ -1,6 +1,5 @@
 """Module """
 import re
-import json
 
 from datetime import datetime, timezone
 from freezegun import freeze_time

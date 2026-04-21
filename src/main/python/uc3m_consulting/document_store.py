@@ -4,7 +4,7 @@ from uc3m_consulting.enterprise_manager_config import (TEST_DOCUMENTS_STORE_FILE
                                                        TEST_NUMDOCS_STORE_FILE)
 
 class DocumentStore:
-    """Clase encargada de la persistencia de documentos e informes (Lectura/Escritura)"""
+    """ Clase encargada de la persistencia de documentos e informes (Lectura/Escritura) """
 
     def __init__(self):
         pass
