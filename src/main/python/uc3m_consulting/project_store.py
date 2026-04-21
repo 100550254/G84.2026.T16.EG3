@@ -10,7 +10,7 @@ class ProjectStore:
         pass
 
     def guardar_proyecto(self, new_project):
-        """ Guarda un nuevo proyecto verificando que no esté duplicado """
+        """ y verifica que no esté duplicado """
         lista_proyectos = self.cargar_proyectos()
 
         for proyecto_item in lista_proyectos:

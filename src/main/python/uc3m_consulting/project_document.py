@@ -14,7 +14,7 @@ class ProjectDocument():
         self.__register_date = datetime.timestamp(justnow)
 
     def to_json(self):
-        """returns the object data in json format"""
+
         return {"alg": self.__alg,
                 "type": self.__type,
                 "project_id": self.__project_id,
@@ -30,7 +30,6 @@ class ProjectDocument():
 
     @property
     def project_id(self):
-        """Property that represents the product_id of the patient"""
         return self.__project_id
 
     @project_id.setter
@@ -39,7 +38,6 @@ class ProjectDocument():
 
     @property
     def file_name(self):
-        """Property that represents the order_id"""
         return self.__file_name
     @file_name.setter
     def file_name(self, value):
@@ -47,7 +45,6 @@ class ProjectDocument():
 
     @property
     def register_date(self):
-        """Property that represents the phone number of the client"""
         return self.__register_date
     @register_date.setter
     def register_date(self, value):

@@ -16,7 +16,6 @@ class ValidadorCif:
     """clase para la validación del cif"""
     @staticmethod
     def validate_cif(codigo_cif: str):
-            """validates a cif number """
             if not isinstance(codigo_cif, str):
                 raise EnterpriseManagementException("CIF code must be a string")
             patron_cif = re.compile(r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$")
@@ -31,7 +30,6 @@ class ValidadorCif:
             digitos_cif = codigo_cif[1:8]
             digito_control_leido = codigo_cif[8]
 
-            # Cálculo de la suma
             suma_total = ValidadorCif._calcular_suma_cif(digitos_cif)
 
             unidad_suma = suma_total % 10
@@ -91,7 +89,7 @@ class ValidadorFecha:
 
 class GestionadorProyecto:
     """clase para gestionar y registrar proyectos"""
-#pylint: disable=too-many-arguments, too-many-positional-arguments
+
     def register_project(self,
                          company_cif: str,
                          project_acronym: str,
@@ -158,13 +156,11 @@ class GestionadorDocumentos:
         """ Genera un informe JSON contando los documentos válidos para una fecha específica """
         self._validar_formato_fecha(fecha_consulta)
 
-        # Instanciamos el store y cargamos documentos
         store = DocumentStore()
         lista_documentos = store.cargar_documentos()
 
         conteo_validos = self._contar_documentos_validos(lista_documentos, fecha_consulta)
 
-        # Preparar y guardar el informe usando el store
         ahora_timestamp = datetime.now(timezone.utc).timestamp()
         resultado_json = {
             "Querydate": fecha_consulta,
@@ -189,7 +185,6 @@ class GestionadorDocumentos:
 
     def _contar_documentos_validos(self, lista_documentos, fecha_consulta):
         conteo_validos = 0
-        # loop to find
         for doc_item in lista_documentos:
             fecha_doc_ts = doc_item["register_date"]
 
