@@ -14,73 +14,61 @@ from uc3m_consulting.document_store import DocumentStore
 
 class ValidadorCif:
     """clase para la validación del cif"""
-
-class ValidadorFecha:
-    """clase para validar la fecha"""
-
-class GestionadorProyecto:
-    """clase para gestionar y registrar proyectos"""
-
-class GestionadorDocumentos:
-    """clase para gestionar y crear documentos"""
-
-class EnterpriseManager:
-    """Class for providing the methods for managing the orders"""
-    def __init__(self):
-        pass
-
     @staticmethod
     def validate_cif(codigo_cif: str):
-        """validates a cif number """
-        if not isinstance(codigo_cif, str):
-            raise EnterpriseManagementException("CIF code must be a string")
-        patron_cif = re.compile(r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$")
-        if not patron_cif.fullmatch(codigo_cif):
-            raise EnterpriseManagementException("Invalid CIF format")
+            """validates a cif number """
+            if not isinstance(codigo_cif, str):
+                raise EnterpriseManagementException("CIF code must be a string")
+            patron_cif = re.compile(r"^[ABCDEFGHJKNPQRSUVW]\d{7}[0-9A-J]$")
+            if not patron_cif.fullmatch(codigo_cif):
+                raise EnterpriseManagementException("Invalid CIF format")
 
-        return EnterpriseManager._comprobar_digito_control(codigo_cif)
+            return ValidadorCif._comprobar_digito_control(codigo_cif)
 
     @staticmethod
     def _comprobar_digito_control(codigo_cif: str):
-        letra_inicial = codigo_cif[0]
-        digitos_cif = codigo_cif[1:8]
-        digito_control_leido = codigo_cif[8]
+            letra_inicial = codigo_cif[0]
+            digitos_cif = codigo_cif[1:8]
+            digito_control_leido = codigo_cif[8]
 
-        # Cálculo de la suma
-        suma_total = EnterpriseManager._calcular_suma_cif(digitos_cif)
+            # Cálculo de la suma
+            suma_total = ValidadorCif._calcular_suma_cif(digitos_cif)
 
-        unidad_suma = suma_total % 10
-        valor_control_calculado = (10 - unidad_suma) % 10
+            unidad_suma = suma_total % 10
+            valor_control_calculado = (10 - unidad_suma) % 10
 
-        # Validación final del mapeo
-        return EnterpriseManager._validar_mapeo_control(letra_inicial, valor_control_calculado, digito_control_leido)
+            # Validación final del mapeo
+            return ValidadorCif._validar_mapeo_control(letra_inicial,
+                                            valor_control_calculado, digito_control_leido)
 
     @staticmethod
     def _calcular_suma_cif(digitos_cif: str):
-        """ Calcula la suma acumulada de los dígitos del CIF """
-        suma_impares = 0
-        suma_pares = 0
-        for i, digito in enumerate(digitos_cif):
-            if i % 2 == 0:
-                doble = int(digito) * 2
-                suma_impares += (doble // 10) + (doble % 10) if doble > 9 else doble
-            else:
-                suma_pares += int(digito)
-        return suma_impares + suma_pares
+            """ Calcula la suma acumulada de los dígitos del CIF """
+            suma_impares = 0
+            suma_pares = 0
+            for i, digito in enumerate(digitos_cif):
+                if i % 2 == 0:
+                    doble = int(digito) * 2
+                    suma_impares += (doble // 10) + (doble % 10) if doble > 9 else doble
+                else:
+                    suma_pares += int(digito)
+            return suma_impares + suma_pares
 
     @staticmethod
     def _validar_mapeo_control(letra_inicial, valor_control, digito_leido):
-        """ Valida que el dígito o letra de control coincida con el tipo de CIF """
-        letras_mapeo = "JABCDEFGHI"
-        if letra_inicial in ('A', 'B', 'E', 'H'):
-            if str(valor_control) != digito_leido:
-                raise EnterpriseManagementException("Invalid CIF character control number")
-        elif letra_inicial in ('P', 'Q', 'S', 'K'):
-            if letras_mapeo[valor_control] != digito_leido:
-                raise EnterpriseManagementException("Invalid CIF character control letter")
-        else:
-            raise EnterpriseManagementException("CIF type not supported")
-        return True
+            """ Valida que el dígito o letra de control coincida con el tipo de CIF """
+            letras_mapeo = "JABCDEFGHI"
+            if letra_inicial in ('A', 'B', 'E', 'H'):
+                if str(valor_control) != digito_leido:
+                    raise EnterpriseManagementException("Invalid CIF character control number")
+            elif letra_inicial in ('P', 'Q', 'S', 'K'):
+                if letras_mapeo[valor_control] != digito_leido:
+                    raise EnterpriseManagementException("Invalid CIF character control letter")
+            else:
+                raise EnterpriseManagementException("CIF type not supported")
+            return True
+class ValidadorFecha:
+    """clase para validar la fecha"""
 
     def validate_starting_date(self, fecha_texto):
         """validates the  date format  using regex"""
@@ -101,7 +89,9 @@ class EnterpriseManager:
             raise EnterpriseManagementException("Invalid date format")
         return fecha_texto
 
-    #pylint: disable=too-many-arguments, too-many-positional-arguments
+class GestionadorProyecto:
+    """clase para gestionar y registrar proyectos"""
+#pylint: disable=too-many-arguments, too-many-positional-arguments
     def register_project(self,
                          company_cif: str,
                          project_acronym: str,
@@ -161,6 +151,9 @@ class EnterpriseManager:
         store.guardar_proyecto(new_project)
         return new_project.project_id
 
+class GestionadorDocumentos:
+    """clase para gestionar y crear documentos"""
+
     def find_docs(self, fecha_consulta):
         """ Genera un informe JSON contando los documentos válidos para una fecha específica """
         self._validar_formato_fecha(fecha_consulta)
@@ -219,3 +212,8 @@ class EnterpriseManager:
             raise EnterpriseManagementException("No documents found")
 
         return conteo_validos
+
+
+
+
+
