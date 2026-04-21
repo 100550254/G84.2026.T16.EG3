@@ -18,7 +18,8 @@ class ValidadorCif:
 class ValidadorFecha:
     """clase para validar la fecha"""
 
-
+class GestionadorProyecto:
+    """clase para gestionar y registrar proyectos"""
 
 class EnterpriseManager:
     """Class for providing the methods for managing the orders"""
