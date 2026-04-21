@@ -21,6 +21,9 @@ class ValidadorFecha:
 class GestionadorProyecto:
     """clase para gestionar y registrar proyectos"""
 
+class GestionadorDocumentos:
+    """clase para gestionar y crear documentos"""
+
 class EnterpriseManager:
     """Class for providing the methods for managing the orders"""
     def __init__(self):
