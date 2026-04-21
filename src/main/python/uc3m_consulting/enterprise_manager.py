@@ -33,33 +33,37 @@ class EnterpriseManager:
         digitos_cif = codigo_cif[1:8]
         digito_control_leido = codigo_cif[8]
 
+        # Cálculo de la suma
+        suma_total = EnterpriseManager._calcular_suma_cif(digitos_cif)
+
+        unidad_suma = suma_total % 10
+        valor_control_calculado = (10 - unidad_suma) % 10
+
+        # Validación final del mapeo
+        return EnterpriseManager._validar_mapeo_control(letra_inicial, valor_control_calculado, digito_control_leido)
+
+    @staticmethod
+    def _calcular_suma_cif(digitos_cif: str):
+        """ Calcula la suma acumulada de los dígitos del CIF """
         suma_impares = 0
         suma_pares = 0
-
-        for i in range(len(digitos_cif)):
+        for i, digito in enumerate(digitos_cif):
             if i % 2 == 0:
-                doble = int(digitos_cif[i]) * 2
-                if doble > 9:
-                    suma_impares = suma_impares + (doble // 10) + (doble % 10)
-                else:
-                    suma_impares = suma_impares + doble
+                doble = int(digito) * 2
+                suma_impares += (doble // 10) + (doble % 10) if doble > 9 else doble
             else:
-                suma_pares = suma_pares + int(digitos_cif[i])
+                suma_pares += int(digito)
+        return suma_impares + suma_pares
 
-        suma_total = suma_impares + suma_pares
-        unidad_suma = suma_total % 10
-        valor_control_calculado = 10 - unidad_suma
-
-        if valor_control_calculado == 10:
-            valor_control_calculado = 0
-
+    @staticmethod
+    def _validar_mapeo_control(letra_inicial, valor_control, digito_leido):
+        """ Valida que el dígito o letra de control coincida con el tipo de CIF """
         letras_mapeo = "JABCDEFGHI"
-
         if letra_inicial in ('A', 'B', 'E', 'H'):
-            if str(valor_control_calculado) != digito_control_leido:
+            if str(valor_control) != digito_leido:
                 raise EnterpriseManagementException("Invalid CIF character control number")
         elif letra_inicial in ('P', 'Q', 'S', 'K'):
-            if letras_mapeo[valor_control_calculado] != digito_control_leido:
+            if letras_mapeo[valor_control] != digito_leido:
                 raise EnterpriseManagementException("Invalid CIF character control letter")
         else:
             raise EnterpriseManagementException("CIF type not supported")
