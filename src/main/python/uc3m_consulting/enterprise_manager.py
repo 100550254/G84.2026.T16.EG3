@@ -143,20 +143,33 @@ class EnterpriseManager:
             raise EnterpriseManagementException("Invalid budget amount")
 
     def _guardar_proyecto(self, new_project: EnterpriseProject):
-        try:
-            with open(PROJECTS_STORE_FILE, "r", encoding="utf-8", newline="") as fichero:
-                lista_proyectos = json.load(fichero)
-        except FileNotFoundError:
-            lista_proyectos = []
-        except json.JSONDecodeError as ex:
-            raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
+        """ Guarda un nuevo proyecto verificando que no esté duplicado """
+        # Lectura del fichero
+        lista_proyectos = self._cargar_proyectos()
 
+        # Comprobamos duplicados
         for proyecto_item in lista_proyectos:
             if proyecto_item == new_project.to_json():
                 raise EnterpriseManagementException("Duplicated project in projects list")
 
         lista_proyectos.append(new_project.to_json())
 
+        # Extraemos la escritura del fichero
+        self._escribir_proyectos(lista_proyectos)
+        return new_project.project_id
+
+    def _cargar_proyectos(self):
+        """ Lee el fichero de proyectos y devuelve la lista de proyectos """
+        try:
+            with open(PROJECTS_STORE_FILE, "r", encoding="utf-8", newline="") as fichero:
+                return json.load(fichero)
+        except FileNotFoundError:
+            return []
+        except json.JSONDecodeError as ex:
+            raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
+
+    def _escribir_proyectos(self, lista_proyectos):
+        """ Sobrescribe el fichero de proyectos con la nueva lista """
         try:
             with open(PROJECTS_STORE_FILE, "w", encoding="utf-8", newline="") as fichero:
                 json.dump(lista_proyectos, fichero, indent=2)
@@ -164,7 +177,6 @@ class EnterpriseManager:
             raise EnterpriseManagementException("Wrong fichero  or fichero path") from ex
         except json.JSONDecodeError as ex:
             raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
-        return new_project.project_id
 
     def find_docs(self, fecha_consulta):
         """
