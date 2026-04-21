@@ -12,8 +12,13 @@ from uc3m_consulting.project_document import ProjectDocument
 from uc3m_consulting.project_store import ProjectStore
 from uc3m_consulting.document_store import DocumentStore
 
-class ValidarCif:
-    #clase para la validación del cif
+class ValidadorCif:
+    """clase para la validación del cif"""
+
+class ValidadorFecha:
+    """clase para validar la fecha"""
+
+
 
 class EnterpriseManager:
     """Class for providing the methods for managing the orders"""
