@@ -179,22 +179,28 @@ class EnterpriseManager:
             raise EnterpriseManagementException("JSON Decode Error - Wrong JSON Format") from ex
 
     def find_docs(self, fecha_consulta):
-        """
-        Generates a JSON report counting valid documents for a specific date.
+        """ Genera un informe JSON contando los documentos válidos para una fecha específica """
+        # Extracción: Validación de la fecha
+        self._validar_formato_fecha(fecha_consulta)
 
-        Checks cryptographic hashes and timestamps to ensure historical data integrity.
-        Saves the output to 'resultado.json'.
+        # Extracción: Lectura del fichero
+        lista_documentos = self._cargar_documentos()
 
-        Args:
-            fecha_consulta (str): date to query.
+        conteo_validos = self._contar_documentos_validos(lista_documentos, fecha_consulta)
 
-        Returns:
-            number of documents found if report is successfully generated and saved.
+        # Preparar y guardar el informe
+        ahora_timestamp = datetime.now(timezone.utc).timestamp()
+        resultado_json = {
+            "Querydate": fecha_consulta,
+            "ReportDate": ahora_timestamp,
+            "Numfiles": conteo_validos
+        }
 
-        Raises:
-            EnterpriseManagementException: On invalid date, file IO errors,
-                missing data, or cryptographic integrity failure.
-        """
+        self._guardar_informe(resultado_json)
+        return conteo_validos
+
+    def _validar_formato_fecha(self, fecha_consulta):
+        """ Comprueba que el string tenga un formato de fecha correcto """
         regex_fecha = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
         resultado_fecha = regex_fecha.fullmatch(fecha_consulta)
         if not resultado_fecha:
@@ -205,25 +211,13 @@ class EnterpriseManager:
         except ValueError as ex:
             raise EnterpriseManagementException("Invalid date format") from ex
 
-        # open documents
+    def _cargar_documentos(self):
+        """ Lee y devuelve el contenido del fichero de documentos """
         try:
             with open(TEST_DOCUMENTS_STORE_FILE, "r", encoding="utf-8", newline="") as file:
-                lista_documentos = json.load(file)
+                return json.load(file)
         except FileNotFoundError as ex:
             raise EnterpriseManagementException("Wrong file  or file path") from ex
-
-        conteo_validos = self._contar_documentos_validos(lista_documentos, fecha_consulta)
-
-        # prepare json text
-        ahora_timestamp = datetime.now(timezone.utc).timestamp()
-        resultado_json = {
-             "Querydate":  fecha_consulta,
-             "ReportDate": ahora_timestamp,
-             "Numfiles": conteo_validos
-        }
-
-        self._guardar_informe(resultado_json)
-        return conteo_validos
 
     def _contar_documentos_validos(self, lista_documentos, fecha_consulta):
         conteo_validos = 0
