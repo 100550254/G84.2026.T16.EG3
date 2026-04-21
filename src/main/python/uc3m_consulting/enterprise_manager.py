@@ -70,6 +70,17 @@ class ValidadorFecha:
     """clase para validar la fecha"""
 
     @staticmethod
+    def validate_format(fecha_texto):
+        """valida solo el formato de la fecha"""
+        regex_fecha = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
+        resultado_match = regex_fecha.fullmatch(fecha_texto)
+        if not resultado_match:
+            raise EnterpriseManagementException("Invalid date format")
+
+        try:
+            return datetime.strptime(fecha_texto, "%d/%m/%Y").date()
+        except ValueError as ex:
+            raise EnterpriseManagementException("Invalid date format") from ex
     def validate_starting_date( fecha_texto):
         """validates the  date format  using regex"""
         regex_fecha = re.compile(r"^(([0-2]\d|3[0-1])\/(0\d|1[0-2])\/\d\d\d\d)$")
@@ -156,7 +167,7 @@ class GestionadorDocumentos:
 
     def find_docs(self, fecha_consulta):
         """ Genera un informe JSON contando los documentos válidos para una fecha específica """
-        ValidadorFecha.validate_starting_date(fecha_consulta)
+        ValidadorFecha.validate_format(fecha_consulta)
 
         store = DocumentStore()
         lista_documentos = store.cargar_documentos()
