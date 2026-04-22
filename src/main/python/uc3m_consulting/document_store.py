@@ -4,10 +4,19 @@ from .enterprise_manager_config import (TEST_DOCUMENTS_STORE_FILE,
                                                        TEST_NUMDOCS_STORE_FILE)
 
 class DocumentStore:
-    """ Clase encargada de la persistencia de documentos e informes (Lectura/Escritura) """
+    """ Clase encargada de la persistencia de documentos e informes (Singleton) """
+    #Singleton aplicado:
+    _instance = None
+
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(DocumentStore, cls).__new__(cls)
+        return cls._instance
 
     def __init__(self):
-        pass
+        if hasattr(self, "_initialized"):
+            return
+        self._initialized = True
 
     def cargar_documentos(self):
         """ Lee y devuelve el contenido del fichero de documentos """
