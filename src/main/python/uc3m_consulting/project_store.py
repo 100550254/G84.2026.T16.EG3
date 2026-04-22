@@ -4,10 +4,20 @@ from .enterprise_manager_config import PROJECTS_STORE_FILE
 
 
 class ProjectStore:
-    """ Clase encargada de gestionar la persistencia de los proyectos (Lectura/Escritura) """
+    """ Clase encargada de gestionar la persistencia de los proyectos (Singleton) """
+
+    _instance = None
+    #Patron singleton aplicado (usamos new para no hacer el singleton mas
+    # complejo)
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(ProjectStore, cls).__new__(cls)
+        return cls._instance
 
     def __init__(self):
-        pass
+        if hasattr(self, "_initialized"):
+            return
+        self._initialized = True
 
     def guardar_proyecto(self, new_project):
         """ y verifica que no esté duplicado """
