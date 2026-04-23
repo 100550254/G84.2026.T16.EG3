@@ -55,3 +55,22 @@ class ProjectDocument():
     def document_signature(self):
         """Returns the sha256 signature of the date"""
         return hashlib.sha256(self.__signature_string().encode()).hexdigest()
+
+    @classmethod
+    def get_docs_from_file(cls, el):
+        from datetime import datetime, timezone
+        from freezegun import freeze_time
+        from uc3m_consulting.enterprise_management_exception import \
+            EnterpriseManagementException
+
+        fecha_obj = datetime.fromtimestamp(el["register_date"],
+                                           tz=timezone.utc)
+
+        with freeze_time(fecha_obj):
+            p = cls(el["project_id"], el["file_name"])
+
+            if p.document_signature != el["document_signature"]:
+                raise EnterpriseManagementException(
+                    "Inconsistent document signature")
+
+            return p

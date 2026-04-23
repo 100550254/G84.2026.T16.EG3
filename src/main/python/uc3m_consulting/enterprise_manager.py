@@ -193,16 +193,8 @@ class GestionadorDocumentos:
             doc_date_str = datetime.fromtimestamp(fecha_doc_ts).strftime("%d/%m/%Y")
 
             if doc_date_str == fecha_consulta:
-                fecha_obj = datetime.fromtimestamp(fecha_doc_ts, tz=timezone.utc)
-                with freeze_time(fecha_obj):
-                    # check the project id (thanks to freezetime)
-                    # if project_id are different then the data has been
-                    #manipulated
-                    p_doc = ProjectDocument(doc_item["project_id"], doc_item["file_name"])
-                    if p_doc.document_signature == doc_item["document_signature"]:
-                        conteo_validos = conteo_validos + 1
-                    else:
-                        raise EnterpriseManagementException("Inconsistent document signature")
+                ProjectDocument.get_docs_from_file(doc_item)
+                conteo_validos += 1
 
         if conteo_validos == 0:
             raise EnterpriseManagementException("No documents found")
