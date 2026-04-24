@@ -169,22 +169,14 @@ class GestionadorDocumentos:
     def find_docs(self, fecha_consulta):
         """ Genera un informe JSON contando los documentos válidos para una fecha específica """
         my_num_docs = NumDocsDocument(fecha_consulta)
-        ValidadorFecha.validate_format(fecha_consulta)
 
         store = DocumentStore()
         lista_documentos = store.cargar_documentos()
 
-        conteo_validos = self._contar_documentos_validos(lista_documentos, fecha_consulta)
+        my_num_docs.find_docs_in_document(lista_documentos)
+        store.guardar_informe(my_num_docs.to_json())
 
-        ahora_timestamp = datetime.now(timezone.utc).timestamp()
-        resultado_json = {
-            "Querydate": fecha_consulta,
-            "ReportDate": ahora_timestamp,
-            "Numfiles": conteo_validos
-        }
-
-        store.guardar_informe(resultado_json)
-        return conteo_validos
+        return my_num_docs.num_files
 
     def _contar_documentos_validos(self, lista_documentos, fecha_consulta):
         conteo_validos = 0

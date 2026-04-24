@@ -20,3 +20,25 @@ class NumDocsDocument:
     @value.setter
     def value(self, query_date):
         self.__query_date=query_date
+
+    @property
+    def num_files(self):
+        return self.__num_files
+
+    def find_docs_in_document(self, d_list):
+        self.__num_files = 0
+        for el in d_list:
+            time_val = el["register_date"]
+            doc_date_str = datetime.fromtimestamp(time_val).strftime(
+                "%d/%m/%Y")
+            if doc_date_str == self.__query_date:
+                ProjectDocument.get_docs_from_file(el)
+                self.__num_files += 1
+
+        if self.__num_files==0:
+            raise EnterpriseManagementException
+        return self.__num_files
+
+    def to_json(self):
+        return{"Querydate": self.__query_date, "ReportDate":
+            self.__report_date,"Numfiles": self.__num_files}
