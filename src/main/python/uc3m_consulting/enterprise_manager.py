@@ -8,8 +8,8 @@ from uc3m_consulting.exception.enterprise_management_exception import Enterprise
 from uc3m_consulting.config.enterprise_manager_config import PROJECTS_STORE_FILE, TEST_DOCUMENTS_STORE_FILE, TEST_NUMDOCS_STORE_FILE
 from uc3m_consulting.num_docs_document import NumDocsDocument
 from uc3m_consulting.project_document import ProjectDocument
-from uc3m_consulting.project_store import ProjectStore
-from uc3m_consulting.document_store import DocumentStore
+from uc3m_consulting.json_store.project_store import ProjectStore
+from uc3m_consulting.json_store.document_store import DocumentStore
 
 class ValidadorCif:
     """clase para la validación del cif"""
