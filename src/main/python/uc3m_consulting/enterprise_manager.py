@@ -8,6 +8,7 @@ from uc3m_consulting.enterprise_management_exception import EnterpriseManagement
 from uc3m_consulting.enterprise_manager_config import (PROJECTS_STORE_FILE,
                                                        TEST_DOCUMENTS_STORE_FILE,
                                                        TEST_NUMDOCS_STORE_FILE)
+from uc3m_consulting.num_docs_document import NumDocsDocument
 from uc3m_consulting.project_document import ProjectDocument
 from uc3m_consulting.project_store import ProjectStore
 from uc3m_consulting.document_store import DocumentStore
@@ -167,6 +168,7 @@ class GestionadorDocumentos:
 
     def find_docs(self, fecha_consulta):
         """ Genera un informe JSON contando los documentos válidos para una fecha específica """
+        my_num_docs = NumDocsDocument(fecha_consulta)
         ValidadorFecha.validate_format(fecha_consulta)
 
         store = DocumentStore()
