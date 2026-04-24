@@ -3,13 +3,13 @@ import re
 
 from datetime import datetime, timezone
 from freezegun import freeze_time
-from uc3m_consulting.enterprise_project import EnterpriseProject
-from uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
-from uc3m_consulting.config.enterprise_manager_config import PROJECTS_STORE_FILE, TEST_DOCUMENTS_STORE_FILE, TEST_NUMDOCS_STORE_FILE
-from uc3m_consulting.num_docs_document import NumDocsDocument
-from uc3m_consulting.project_document import ProjectDocument
-from uc3m_consulting.json_store.project_store import ProjectStore
-from uc3m_consulting.json_store.document_store import DocumentStore
+from .enterprise_project import EnterpriseProject
+from .exception.enterprise_management_exception import EnterpriseManagementException
+from .config.enterprise_manager_config import PROJECTS_STORE_FILE, TEST_DOCUMENTS_STORE_FILE, TEST_NUMDOCS_STORE_FILE
+from .num_docs_document import NumDocsDocument
+from .project_document import ProjectDocument
+from .json_store.project_store import ProjectStore
+from .json_store.document_store import DocumentStore
 
 class ValidadorCif:
     """clase para la validación del cif"""

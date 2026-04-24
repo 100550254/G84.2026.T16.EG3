@@ -7,6 +7,7 @@ from unittest import TestCase
 from os import remove
 from datetime import datetime,timezone
 from freezegun import freeze_time
+from uc3m_consulting.json_store.enterprise_manager import EnterpriseManager
 from uc3m_consulting import (TEST_NUMDOCS_STORE_FILE,
                         ValidadorCif, ValidadorFecha, GestionadorProyecto,GestionadorDocumentos,
                         EnterpriseManagementException)

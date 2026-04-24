@@ -7,6 +7,7 @@ import hashlib
 from unittest import TestCase
 from os import remove
 from freezegun import freeze_time
+from uc3m_consulting.json_store.enterprise_manager import EnterpriseManager
 from uc3m_consulting import (JSON_FILES_PATH,
                         PROJECTS_STORE_FILE,
                         EnterpriseProject,
