@@ -2,7 +2,7 @@ from datetime  import datetime, timezone
 from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
 from.project_document import ProjectDocument
 from .enterprise_manager import ValidadorFecha
-from .date import Date
+from src.main.python.uc3m_consulting.attributes.attribute.date import Date
 
 class NumDocsDocument:
     def __init__(self, query_date: str):

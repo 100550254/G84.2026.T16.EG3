@@ -1,7 +1,7 @@
 import re
 from datetime import datetime, timezone
 from uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
-from.attribute import Attribute
+from src.main.python.uc3m_consulting.attributes.attribute import Attribute
 
 class Date(Attribute):
     """clase para validar la fecha"""
