@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="unittest.loader._FailedTest-20260424232800" tests="2" file="unittest/loader.py" time="0.011" timestamp="2026-04-24T23:28:00" failures="0" errors="2" skipped="0">
+	<testcase classname="unittest.loader._FailedTest" name="test_documents_repor_tests" time="0.007" timestamp="2026-04-24T23:28:00">
+		<error type="ImportError" message="Failed to import test module: test_documents_repor_tests&#10;Traceback (most recent call last):&#10;  File &quot;C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py&quot;, line 137, in loadTestsFromName&#10;    module = __import__(module_name)&#10;  File &quot;c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\unittest\python\test_documents_repor_tests.py&quot;, line 10, in &lt;module&gt;&#10;    from uc3m_consulting import (TEST_NUMDOCS_STORE_FILE,&#10;                            ValidadorCif, ValidadorFecha, GestionadorProyecto,GestionadorDocumentos,&#10;                            EnterpriseManagementException)&#10;  File &quot;c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\__init__.py&quot;, line 4, in &lt;module&gt;&#10;    from .enterprise_manager import ValidadorCif&#10;  File &quot;c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\enterprise_manager.py&quot;, line 9, in &lt;module&gt;&#10;    from uc3m_consulting.num_docs_document import NumDocsDocument&#10;  File &quot;c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\num_docs_document.py&quot;, line 2, in &lt;module&gt;&#10;    from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException&#10;ModuleNotFoundError: No module named 'src'&#10;"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py", line 58, in testPartExecutor
+    yield
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py", line 651, in run
+    self._callTestMethod(testMethod)
+    
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py", line 606, in _callTestMethod
+    if method() is not None:
+    ^^^^^^^^^^^^^^^
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py", line 33, in testFailure
+    raise self._exception
+    ^^^^^^^^^^^
+ImportError: Failed to import test module: test_documents_repor_tests
+Traceback (most recent call last):
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\unittest\python\test_documents_repor_tests.py", line 10, in <module>
+    from uc3m_consulting import (TEST_NUMDOCS_STORE_FILE,
+                            ValidadorCif, ValidadorFecha, GestionadorProyecto,GestionadorDocumentos,
+                            EnterpriseManagementException)
+  File "c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\__init__.py", line 4, in <module>
+    from .enterprise_manager import ValidadorCif
+  File "c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\enterprise_manager.py", line 9, in <module>
+    from uc3m_consulting.num_docs_document import NumDocsDocument
+  File "c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\num_docs_document.py", line 2, in <module>
+    from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
+ModuleNotFoundError: No module named 'src'
+
+]]></error>
+	</testcase>
+	<testcase classname="unittest.loader._FailedTest" name="test_register_project_tests" time="0.005" timestamp="2026-04-24T23:28:00">
+		<error type="ImportError" message="Failed to import test module: test_register_project_tests&#10;Traceback (most recent call last):&#10;  File &quot;C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py&quot;, line 137, in loadTestsFromName&#10;    module = __import__(module_name)&#10;  File &quot;c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\unittest\python\test_register_project_tests.py&quot;, line 10, in &lt;module&gt;&#10;    from uc3m_consulting import (JSON_FILES_PATH,&#10;    ...&lt;3 lines&gt;...&#10;                            EnterpriseManagementException)&#10;  File &quot;c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\__init__.py&quot;, line 4, in &lt;module&gt;&#10;    from .enterprise_manager import ValidadorCif&#10;  File &quot;c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\enterprise_manager.py&quot;, line 9, in &lt;module&gt;&#10;    from uc3m_consulting.num_docs_document import NumDocsDocument&#10;  File &quot;c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\num_docs_document.py&quot;, line 2, in &lt;module&gt;&#10;    from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException&#10;ModuleNotFoundError: No module named 'src'&#10;"><![CDATA[Traceback (most recent call last):
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py", line 58, in testPartExecutor
+    yield
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py", line 651, in run
+    self._callTestMethod(testMethod)
+    
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\case.py", line 606, in _callTestMethod
+    if method() is not None:
+    ^^^^^^^^^^^^^^^
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py", line 33, in testFailure
+    raise self._exception
+    ^^^^^^^^^^^
+ImportError: Failed to import test module: test_register_project_tests
+Traceback (most recent call last):
+  File "C:\Users\lucia\AppData\Local\Programs\Python\Python313\Lib\unittest\loader.py", line 137, in loadTestsFromName
+    module = __import__(module_name)
+  File "c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\unittest\python\test_register_project_tests.py", line 10, in <module>
+    from uc3m_consulting import (JSON_FILES_PATH,
+    ...<3 lines>...
+                            EnterpriseManagementException)
+  File "c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\__init__.py", line 4, in <module>
+    from .enterprise_manager import ValidadorCif
+  File "c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\enterprise_manager.py", line 9, in <module>
+    from uc3m_consulting.num_docs_document import NumDocsDocument
+  File "c:\users\lucia\pycharmprojects\g84.2026.t16.eg3\src\main\python\uc3m_consulting\num_docs_document.py", line 2, in <module>
+    from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
+ModuleNotFoundError: No module named 'src'
+
+]]></error>
+	</testcase>
+</testsuite>
