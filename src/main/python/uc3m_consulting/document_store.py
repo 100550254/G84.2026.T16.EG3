@@ -1,7 +1,7 @@
 import json
 from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
-from .enterprise_manager_config import (TEST_DOCUMENTS_STORE_FILE,
-                                                       TEST_NUMDOCS_STORE_FILE)
+from src.main.python.uc3m_consulting.config.enterprise_manager_config import (TEST_DOCUMENTS_STORE_FILE,
+                                                                              TEST_NUMDOCS_STORE_FILE)
 
 class DocumentStore:
     """ Clase encargada de la persistencia de documentos e informes (Singleton) """

@@ -1,6 +1,6 @@
 import re
 from datetime import datetime, timezone
-from uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException import EnterpriseManagementException
+from uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
 from.attribute import Attribute
 
 class Date(Attribute):

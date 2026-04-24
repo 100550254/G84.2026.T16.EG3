@@ -1,6 +1,6 @@
 import json
 from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
-from .enterprise_manager_config import PROJECTS_STORE_FILE
+from src.main.python.uc3m_consulting.config.enterprise_manager_config import PROJECTS_STORE_FILE
 
 
 class ProjectStore:

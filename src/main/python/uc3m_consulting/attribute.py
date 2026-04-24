@@ -1,4 +1,4 @@
-from uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException import EnterpriseManagementException
+from uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
 
 class Attribute:
     def __init__(self, value):
