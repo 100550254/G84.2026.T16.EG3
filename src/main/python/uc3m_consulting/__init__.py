@@ -6,7 +6,7 @@ from .enterprise_manager import ValidadorFecha
 from .enterprise_manager import GestionadorProyecto
 from .enterprise_manager import GestionadorDocumentos
 
-from .enterprise_management_exception import EnterpriseManagementException
+from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
 from .enterprise_project import EnterpriseProject
 from .enterprise_manager_config import (JSON_FILES_PATH,
                                                        JSON_FILES_TRANSACTIONS,

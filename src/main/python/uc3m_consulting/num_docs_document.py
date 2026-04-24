@@ -1,8 +1,7 @@
 from datetime  import datetime, timezone
-from .enterprise_management_exception import EnterpriseManagementException
+from src.main.python.uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException
 from.project_document import ProjectDocument
 from .enterprise_manager import ValidadorFecha
-from .attribute import Attribute
 from .date import Date
 
 class NumDocsDocument:

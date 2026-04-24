@@ -60,7 +60,7 @@ class ProjectDocument():
     def get_docs_from_file(cls, el):
         from datetime import datetime, timezone
         from freezegun import freeze_time
-        from uc3m_consulting.enterprise_management_exception import \
+        from uc3m_consulting.exception.enterprise_management_exception import EnterpriseManagementException import \
             EnterpriseManagementException
 
         fecha_obj = datetime.fromtimestamp(el["register_date"],
